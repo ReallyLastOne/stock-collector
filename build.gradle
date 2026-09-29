@@ -1,0 +1,51 @@
+plugins {
+    id 'application'
+}
+
+group = 'org.reallylastone'
+version = file('version.txt').text.trim()
+
+application {
+    mainClass = 'org.reallylastone.stock_collector.Main'
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes "Main-Class": "org.reallylastone.stock_collector.Main"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation libs.leader.election.lib
+    implementation libs.postgresql
+    implementation libs.java.websocket
+    implementation libs.jackson.databind
+    runtimeOnly libs.slf4j.simple
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+    testImplementation libs.junit.jupiter
+    testImplementation libs.mockito.junit.jupiter
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+    testRuntimeOnly libs.junit.platform.launcher
+}
+
+test {
+    useJUnitPlatform()
+}

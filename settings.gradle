@@ -1,0 +1,12 @@
+rootProject.name = 'stock-collector'
+
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+    }
+    versionCatalogs {
+        libs {
+            from("org.reallylastone:version-catalog:${file('catalog-version.txt').text.trim()}")
+        }
+    }
+}
